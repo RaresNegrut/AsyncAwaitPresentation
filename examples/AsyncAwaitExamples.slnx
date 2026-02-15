@@ -1,0 +1,20 @@
+<Solution>
+  <Project Path="Slide03_AsyncBasics/Slide03_AsyncBasics.csproj" />
+  <Project Path="Slide06_SyncContextWpf/Slide06_SyncContextWpf.csproj" />
+  <Project Path="Slide08_ConfigureAwait/Slide08_ConfigureAwait.csproj" />
+  <Project Path="Slide10_ClassicDeadlock/Slide10_ClassicDeadlock.csproj" />
+  <Project Path="Slide11_ExecutionContext/Slide11_ExecutionContext.csproj" />
+  <Project Path="Slide12_AsyncLocal/Slide12_AsyncLocal.csproj" />
+  <Project Path="Slide13_AsyncLocalTrap/Slide13_AsyncLocalTrap.csproj" />
+  <Project Path="Slide14_ExecVsSync/Slide14_ExecVsSync.csproj" />
+  <Project Path="Slide15_TaskScheduler/Slide15_TaskScheduler.csproj" />
+  <Project Path="Slide16_TaskSchedulerDeadlock/Slide16_TaskSchedulerDeadlock.csproj" />
+  <Project Path="Slide17_CancellationToken/Slide17_CancellationToken.csproj" />
+  <Project Path="Slide18_LinkedTokens/Slide18_LinkedTokens.csproj" />
+  <Project Path="Slide19_CancellationExceptions/Slide19_CancellationExceptions.csproj" />
+  <Project Path="Slide20_ElidingAsyncAwait/Slide20_ElidingAsyncAwait.csproj" />
+  <Project Path="Slide21_ElidingPitfalls/Slide21_ElidingPitfalls.csproj" />
+  <Project Path="Slide22_AsyncVoid/Slide22_AsyncVoid.csproj" />
+  <Project Path="Slide23_TaskRunVsStartNew/Slide23_TaskRunVsStartNew.csproj" />
+  <Project Path="Slide24_ValueTask/Slide24_ValueTask.csproj" />
+</Solution>

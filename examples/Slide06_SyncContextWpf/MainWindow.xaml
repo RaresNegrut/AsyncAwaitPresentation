@@ -1,0 +1,11 @@
+<Window x:Class="Slide06.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Slide 6: SynchronizationContext in WPF" Height="300" Width="500">
+    <StackPanel Margin="20" VerticalAlignment="Center">
+        <TextBlock x:Name="StatusLabel" Text="Click the button to start async work."
+                   FontSize="16" TextWrapping="Wrap" Margin="0,0,0,15"/>
+        <Button Content="Load Data (async)" Click="Button_Click"
+                FontSize="14" Padding="10,5"/>
+    </StackPanel>
+</Window>
