@@ -1,0 +1,56 @@
+A taskCompletionSource is the producer side of a Task unbound to a delegate, providing access to the consumer side through the task property.
+
+Task has the role of a consumer because we await the result, but we have no control over completion with a task
+
+The TaskCompletionSource controls when and how the task completes (result, excpetion, cancellation)
+The primary type of asynchronous workload supported by Task is the execution of a delegate, either an Action or a Func<T>, such that the delegate’s execution in the underlying scheduler is represented by the Task. But in any compositional system that wants to use Task as its centerpiece, just support for asynchronous delegate execution isn’t enough: support must be provided for other asynchronous operations as well. For example, there are a variety of asynchronous operations already implemented in the .NET Framework and exposed through the Asynchronous Programming Model (APM) pattern or the Event-Based Asynchronous Pattern (EAP). In both of these cases, we’d like to be able to refer to these asynchronous operations as Tasks and operate on them as Tasks, even though the underlying work isn’t necessarily being performed by scheduling and executing a delegate. (More to come on both of those in future posts.)
+
+To support such a paradigm with Tasks, we need a way to retain the Task façade and the ability to refer to an arbitrary asynchronous operation as a Task, but to control the lifetime of that Task according to the rules of the underlying infrastructure that’s providing the asynchrony, and to do so in a manner that doesn’t cost significantly. This is the purpose of TaskCompletionSource<TResult>.
+
+The TaskCompletionSource<TResult> type serves two related purposes, both alluded to by its name: it is a source for creating a task, and the source for that task’s completion. In essence, a TaskCompletionSource<TResult> acts as the producer for a Task<TResult> and its completion. You create a TaskCompletionSource<TResult> and hand the underlying Task<TResult> it’s created, accessible from its Task property. Unlike Tasks created by Task.Factory.StartNew, the Task handed out by TaskCompletionSource<TResult> does not have any scheduled delegate associated with it. Rather, TaskCompletionSource<TResult> provides methods that allow you as the developer to control the lifetime and completion of the associated Task. This includes SetResult, SetException, and SetCanceled, as well as TrySet* variants of each of those
+
+in short, the task instance of a tcs does not have a scheduled delegate associated with it. TCS provide methods for the dev to control lifetime&completion of the associated task
+
+
+Task factory startNew vs task run
+Task.Run = Task.Factory.StartNew with: DenyChildAttach, runOnThreadPoolThread
+
+
+**Remaining topics to discuss:
+CancellationTokens, CancellationTokenSource, ValueTask**
+
+
+But before that:
+
+
+WTF is a task scheduler
+a scheduler of tasks(lol)
+ensures work of a task is eventually executed
+default task scheduler provides
+work stealing
+load balancing
+thread injection and retirement
+good overall performance
+it's an extension point for customizable scheduling logic
+how 2 schedule task 4 execution
+how should tasks be exposed 2 deboogers
+the default scheduler uses the net threadpool. Using data from the Task, it offers support for fine grained parallelism (small units of work)
+
+thread pool maintains a global FIFO work queue for the app
+when program calls QueueUserWorkItem work is put on shared queue
+work is dequeued on the next thread that becomes available
+with net framework 4, queue uses lock-free algo, ConcurrentQueue- esque impl - it's a chase-lev(dynamic circular) work-stealing deque god
+top level tasks, which are tasks not created in the ctx of another task, are put in the global queue.
+nested/children tasks, are put on a local queue specific to the thread on which the parent task is executing
+when a thread is ready 4 moah work, it looks in local queue
+local quque are LIFO accessed
+work stealing part:
+thread looks at head of local quque, then global one, then local q of other threds
+if work found in local q of nother thread, dequeues item from tail to reduce chances of conflict with local thread (if it occurs, CMPXCHG)
+inlining: when a task is waited on, it may be executed synchronously on the thread that is performing the wait operation
+
+
+
+Specifying a synchro context
+you can use taskScheduler.FromCurrentSynchroContext method to specify that a task should be scheduled to run on a particular thread
+useful in WinForms and WPF 2 schedule taks on the same thread the UI control was created on.
